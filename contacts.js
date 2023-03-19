@@ -5,9 +5,14 @@ const { v4 } = require("uuid");
 const contactsPath = path.join(__dirname, "db/contacts.json");
 
 async function listContacts() {
-  const data = await fs.readFile(contactsPath);
-  const contacts = JSON.parse(data);
-  return contacts;
+  try {
+    const data = await fs.readFile(contactsPath);
+    const contacts = JSON.parse(data);
+    return contacts;
+  } catch (error) {
+    console.error(`Error reading contacts from file: ${error.message}`);
+    return [];
+  }
 }
 
 async function getContactById(contactId) {
@@ -39,7 +44,11 @@ async function addContact(name, email, phone) {
 }
 
 async function updateContacts(contacts) {
-  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+  try {
+    await fs.writeFile(contactsPath, JSON.stringify(contacts));
+  } catch (error) {
+    console.error(`Error writing contacts to file: ${error.message}`);
+  }
 }
 
 module.exports = {
