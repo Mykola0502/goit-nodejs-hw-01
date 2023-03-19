@@ -16,31 +16,46 @@ async function listContacts() {
 }
 
 async function getContactById(contactId) {
-  const contacts = await listContacts();
-  const result = contacts.find((item) => item.id === contactId);
-  if (!result) {
+  try {
+    const contacts = await listContacts();
+    const result = contacts.find((item) => item.id === contactId);
+    if (!result) {
+      return null;
+    }
+    return result;
+  } catch (error) {
+    console.error(`Error getting contact by id: ${error.message}`);
     return null;
   }
-  return result;
 }
 
 async function removeContact(contactId) {
-  const contacts = await listContacts();
-  const idx = contacts.findIndex((item) => item.id === contactId);
-  if (idx === -1) {
+  try {
+    const contacts = await listContacts();
+    const idx = contacts.findIndex((item) => item.id === contactId);
+    if (idx === -1) {
+      return null;
+    }
+    const newContacts = contacts.filter((_, index) => index !== idx);
+    await updateContacts(newContacts);
+    return contacts[idx];
+  } catch (error) {
+    console.error(`Error removing contact: ${error.message}`);
     return null;
   }
-  const newContacts = contacts.filter((_, index) => index !== idx);
-  await updateContacts(newContacts);
-  return contacts[idx];
 }
 
 async function addContact(name, email, phone) {
-  const contacts = await listContacts();
-  const newContact = { id: v4(), name, email, phone };
-  contacts.push(newContact);
-  await updateContacts(contacts);
-  return newContact;
+  try {
+    const contacts = await listContacts();
+    const newContact = { id: v4(), name, email, phone };
+    contacts.push(newContact);
+    await updateContacts(contacts);
+    return newContact;
+  } catch (error) {
+    console.error(`Error adding contact: ${error.message}`);
+    return null;
+  }
 }
 
 async function updateContacts(contacts) {
