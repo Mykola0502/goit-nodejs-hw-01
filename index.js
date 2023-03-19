@@ -2,14 +2,6 @@ const { Command } = require("commander");
 
 const contactsOperations = require("./contacts");
 
-// async function getContacts() {
-//   const contacts = await contactsOperations.listContacts();
-//   console.log(contacts);
-//   return contacts;
-// }
-
-// console.log(getContacts());
-
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
@@ -55,18 +47,3 @@ const argv = program.opts();
 (async () => {
   await invokeAction(argv);
 })();
-
-// invokeAction(argv);
-
-// invokeAction({ action: "list" });
-
-// invokeAction({ action: "get", id: "10" });
-
-// invokeAction({
-//   action: "add",
-//   name: "Mykola Saliuk",
-//   email: "ms@mail.com",
-//   phone: "+380111111111",
-// });
-
-// invokeAction({ action: "remove", id: "f5da73c1-95c5-440d-b2d3-e3035b67310a" });
